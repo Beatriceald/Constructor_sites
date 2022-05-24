@@ -42,13 +42,26 @@ class ConstructorView(DetailView):
         #getting photos by API
         PEXELS_API_KEY = '563492ad6f917000010000013b93d4d2b2f0471b88e907d5edccb327'
         api = API(PEXELS_API_KEY)
-        api.search(constructor.keywords, page=1, results_per_page=5)
+        #photos for slider
+        api.search(constructor.keywords)
         photos = api.get_entries()
         photo_url_list = []
+        photos_slider = []
+        
+        for photo in photos:  
+            photos_slider.append(photo.medium)
+            if len(photos_slider) > 5:
+                break
+
         for photo in photos:
             photo_url_list.append(photo.medium)
 
-        context['photo_list'] = photo_url_list
+        
+
+            
+
+        context['photo_url_list'] = photo_url_list
+        context['photos_slider'] = photos_slider
         return context
 
 
