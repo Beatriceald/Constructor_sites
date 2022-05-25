@@ -49,7 +49,7 @@ class ConstructorView(DetailView):
         photos_slider = []
         
         for photo in photos:  
-            photos_slider.append(photo.medium)
+            photos_slider.append(photo.original)
             if len(photos_slider) > 5:
                 break
 
@@ -60,7 +60,7 @@ class ConstructorView(DetailView):
 
             
 
-        context['photo_url_list'] = photo_url_list
+        context['photo_url_list'] = photo_url_list[4:]
         context['photos_slider'] = photos_slider
         return context
 
