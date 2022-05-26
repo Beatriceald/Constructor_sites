@@ -1,67 +1,51 @@
-from urllib import response
 from django.shortcuts import render
 from django.views.generic import CreateView, DetailView
-import requests
 from .forms import AddDateForm
 from . models import *
-
 from pexels_api import API
 
+""" Отображение заглавной страницы """
 def index(request):
-    
-    PEXELS_API_KEY = '563492ad6f917000010000013b93d4d2b2f0471b88e907d5edccb327'
-    api = API(PEXELS_API_KEY)
-    api.search('kitten', page=1, results_per_page=5)
-    photos = api.get_entries()
-    somelist = []
-    for photo in photos:
-        somelist.append(photo.medium)
-
     context = {
         'title': 'Главная страница',
-        'somelist': somelist,
     }
-
     return render(request, 'constructor/index.html', context)
 
 
+""" Отображение формы заполнения данных """
 class Add_date(CreateView):
     form_class = AddDateForm
     template_name = 'constructor/add_date.html'
 
+""" API функция для фото """
+def pexels_api(constructor):
+    PEXELS_API_KEY = '563492ad6f917000010000013b93d4d2b2f0471b88e907d5edccb327'
+    api = API(PEXELS_API_KEY)
+    api.search(constructor.keywords)
+    photos = api.get_entries()
+    photo_stream = []
+        # заполнение списка ссылками на фото
+    for photo in photos:
+        if len(photo_stream) < 4:
+            photo_stream.append(photo.original)
+        else:
+            photo_stream.append(photo.medium)
+    return (photo_stream)
+
+
+""" Отображение после заполнения формы  """
 class ConstructorView(DetailView):
     model = Constructor
     template_name = 'constructor/inn.html'
     context_object_name = 'inn'
 
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ConstructorView, self).get_context_data(**kwargs)
-        # Object is accessible through self.object or self.get_object()
         constructor = self.get_object()
-        #getting photos by API
-        PEXELS_API_KEY = '563492ad6f917000010000013b93d4d2b2f0471b88e907d5edccb327'
-        api = API(PEXELS_API_KEY)
-        #photos for slider
-        api.search(constructor.keywords)
-        photos = api.get_entries()
-        photo_url_list = []
-        photos_slider = []
-        
-        for photo in photos:  
-            photos_slider.append(photo.original)
-            if len(photos_slider) > 5:
-                break
-
-        for photo in photos:
-            photo_url_list.append(photo.medium)
-
-        
-
-            
-
-        context['photo_url_list'] = photo_url_list[4:]
-        context['photos_slider'] = photos_slider
+        context['photo_stream'] = pexels_api(constructor)[4:]
+        context['photos_slider'] = pexels_api(constructor)[:4]
+        context['city'] = constructor.city
+        context['key'] = 'AIzaSyDCRttepmyi8qYqFtBkrzYC2cRzx62zew4'
         return context
 
 

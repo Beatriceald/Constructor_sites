@@ -26,8 +26,8 @@ class Constructor(models.Model):
     twtr = models.CharField(max_length=100, verbose_name='Twitter')
     fb = models.CharField(max_length=100, verbose_name='Facebook')
     inst = models.CharField(max_length=100, verbose_name='Instagram')
-    x = models.FloatField(help_text='xx.xxxxxx', max_length=8, verbose_name='X', validators=[MinValueValidator(8)])
-    y = models.FloatField(help_text='xx.xxxxxx', max_length=8, verbose_name='Y', validators=[MinValueValidator(8)])
+    x = models.FloatField(help_text='xx.xxxxxx', blank=True, null=True, verbose_name='X', validators=[MinValueValidator(8)])
+    y = models.FloatField(help_text='xx.xxxxxx', blank=True, null=True, verbose_name='Y', validators=[MinValueValidator(8)])
     additional = models.TextField(help_text='Дополнительная информация', blank=True, verbose_name='Дополнительно')
     work_time = models.CharField(max_length=50, verbose_name='Время работы')
 
