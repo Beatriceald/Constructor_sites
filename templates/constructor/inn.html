@@ -1,4 +1,5 @@
 {% load static %}
+{% load floattags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,10 +55,10 @@
             height="250"
             frameborder="0" style="border:0"
             referrerpolicy="no-referrer-when-downgrade"
-            {% if not inn.x or inn.y %}
-                src="https://www.google.com/maps/embed/v1/place?key={{key}}&q={{inn.country}}+{{inn.region}}+{{inn.city}}+{{inn.adress}}"
+            {% if inn.x and inn.y %}
+                src="https://www.google.com/maps/embed/v1/place?key={{key}}&q={{inn.y|formatted_float}}+{{inn.x|formatted_float}}"
             {% else %}
-            src="https://www.google.com/maps/embed/v1/place?key={{key}}&q={{inn.x}}+{{inn.y}}"
+                src="https://www.google.com/maps/embed/v1/place?key={{key}}&q={{inn.country}}+{{inn.region}}+{{inn.city}}+{{inn.adress}}"
             {% endif %}
             allowfullscreen>
         </iframe
