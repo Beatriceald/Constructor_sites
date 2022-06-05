@@ -78,3 +78,8 @@ input[name="r"] {
 #r4:checked ~ .s1 {
     margin-left: -75%;
 }
+
+.icon {
+    float: right;
+    margin-right: 16px;
+}

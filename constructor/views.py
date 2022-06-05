@@ -3,6 +3,8 @@ from django.views.generic import CreateView, DetailView
 from .forms import AddDateForm
 from . models import *
 from pexels_api import API
+from .APIs import icon
+
 
 """ Отображение заглавной страницы """
 def index(request):
@@ -44,6 +46,7 @@ class ConstructorView(DetailView):
         constructor = self.get_object()
         context['photo_stream'] = pexels_api(constructor)[4:]
         context['photos_slider'] = pexels_api(constructor)[:4]
+        context['icon'] = icon(constructor.keywords)
         context['city'] = constructor.city
         context['key'] = 'AIzaSyDCRttepmyi8qYqFtBkrzYC2cRzx62zew4'
         return context

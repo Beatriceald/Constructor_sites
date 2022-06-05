@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 
 
 # TODO: change the 'work_time' field 
